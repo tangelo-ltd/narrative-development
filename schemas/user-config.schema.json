@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://narrative.dev/schemas/user-config.json",
+  "title": "nara User Configuration",
+  "description": "Schema for .nara/config.json user configuration file",
+  "type": "object",
+  "properties": {
+    "ai": {
+      "type": "object",
+      "description": "AI provider configuration",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": ["codex", "claude", "gemini", "custom", "none"],
+          "default": "none",
+          "description": "Selected AI provider"
+        },
+        "command": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "Executable name or absolute path"
+        },
+        "args": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Additional CLI arguments"
+        },
+        "promptMode": {
+          "type": "string",
+          "enum": ["stdin", "arg"],
+          "default": "stdin",
+          "description": "How to pass prompt to CLI"
+        },
+        "outputMode": {
+          "type": "string",
+          "enum": ["json", "sections", "raw"],
+          "default": "sections",
+          "description": "Expected output format"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

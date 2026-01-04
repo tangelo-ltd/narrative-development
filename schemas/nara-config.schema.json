@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://narrative.dev/schemas/nara-config.json",
+  "title": "nara Project Configuration",
+  "description": "Schema for nara.json project configuration file",
+  "type": "object",
+  "properties": {
+    "specRoot": {
+      "type": "string",
+      "default": "specs",
+      "description": "Root directory for all specifications"
+    },
+    "conventionsIndex": {
+      "type": "string",
+      "default": "specs/conventions/index.md",
+      "description": "Path to conventions index file"
+    },
+    "storiesRoot": {
+      "type": "string",
+      "default": "specs/stories",
+      "description": "Root directory for story files"
+    },
+    "tokenPolicy": {
+      "type": "object",
+      "description": "Advisory limits for AI context assembly",
+      "properties": {
+        "maxFiles": {
+          "type": "integer",
+          "default": 6,
+          "minimum": 1,
+          "description": "Maximum files to include in context"
+        },
+        "maxBytes": {
+          "type": "integer",
+          "default": 120000,
+          "minimum": 1000,
+          "description": "Maximum total bytes for context"
+        },
+        "includeGlossary": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to include glossary in context"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
