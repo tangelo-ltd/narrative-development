@@ -9,6 +9,37 @@ Prerequisites:
 - Node.js >= 18
 - npm
 
+Install from npm (recommended):
+
+```bash
+npm install -g @tangeloltd/narrative-development
+```
+
+Or install locally in a project:
+
+```bash
+npm install --save-dev @tangeloltd/narrative-development
+```
+
+Run without installing:
+
+```bash
+npx @tangeloltd/narrative-development --help
+```
+
+Aliases:
+
+- `@tangeloltd/nara`
+- `@tangeloltd/nara-cli`
+
+Then run:
+
+```bash
+nara --help
+```
+
+Install from source:
+
 Steps:
 
 1. Clone this repo or download the ZIP from GitHub.

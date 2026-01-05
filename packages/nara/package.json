@@ -1,0 +1,20 @@
+{
+  "name": "@tangeloltd/nara",
+  "version": "0.0.1",
+  "description": "Alias package for Narrative Development CLI",
+  "type": "module",
+  "author": "Ramazan Yavuz",
+  "license": "MIT",
+  "bin": {
+    "nara": "bin/cli.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@tangeloltd/narrative-development": "0.0.1"
+  }
+}

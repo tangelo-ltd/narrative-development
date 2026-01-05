@@ -5,13 +5,18 @@ Narrative Development CLI - intent-first specs for human + AI collaboration.
 ## Installation
 
 ```bash
-npm install -g @tangelo/nara
+npm install -g @tangeloltd/narrative-development
 ```
+
+Aliases:
+
+- `@tangeloltd/nara`
+- `@tangeloltd/nara-cli`
 
 Or run directly with npx:
 
 ```bash
-npx @tangelo/nara init
+npx @tangeloltd/narrative-development init
 ```
 
 ## Commands
