@@ -1,6 +1,6 @@
 {
   "name": "@tangeloltd/nara-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CLI alias package for Narrative Development",
   "type": "module",
   "author": "Ramazan Yavuz",
@@ -15,6 +15,6 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@tangeloltd/narrative-development": "0.0.1"
+    "@tangeloltd/narrative-development": "0.0.2"
   }
 }

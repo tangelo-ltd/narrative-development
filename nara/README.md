@@ -19,7 +19,19 @@ Or run directly with npx:
 npx @tangeloltd/narrative-development init
 ```
 
+## Quickstart
+
+```bash
+nara init
+nara story storage.read
+```
+
+`nara` will prompt you for any missing details (AI tool selection, settings, and story inputs).
+
 ## Commands
+
+Most commands are interactive by default. If you skip flags or config, `nara` will prompt you for anything it needs.
+Using external AI providers may incur usage costs depending on your configured tool and account (e.g. Gemini, Claude, Codex).
 
 ### Initialize a project
 
@@ -36,7 +48,8 @@ This creates a `.nara/` directory in the project root that contains all narrativ
 nara detect
 ```
 
-Scans for installed AI CLI tools (codex, claude, gemini) and configures your preference.
+Scans for installed AI CLI tools (codex, claude, gemini) and sets your preference.
+Optional: if you skip this, `nara` will still prompt you when it needs an AI tool.
 
 To re-select interactively at any time:
 
@@ -50,6 +63,8 @@ nara --config
 nara configure ai.provider=claude
 nara configure ai.command=/path/to/custom-ai
 ```
+
+Optional: use this if you prefer setting values directly instead of answering prompts.
 
 ### Create a story
 

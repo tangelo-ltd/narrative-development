@@ -38,6 +38,18 @@ Then run:
 nara --help
 ```
 
+Most commands are interactive by default. If you skip flags or config, `nara` will prompt you for anything it needs.
+Using external AI providers may incur usage costs depending on your configured tool and account (e.g. Gemini, Claude, Codex).
+
+## Quickstart
+
+```bash
+nara init
+nara story storage.read
+```
+
+`nara` will prompt you for any missing details (AI tool selection, settings, and story inputs).
+
 Install from source:
 
 Steps:
@@ -286,6 +298,8 @@ The narrative drives the process. The code remains provisional.
 - Atomic story creation.
 - Explicit AI-assisted steps.
 - Delegation to the user's preferred AI tooling.
+
+If you have AI tools installed, `nara` can detect them, but this is optional; it will prompt you to choose or configure when needed.
 
 Supported aliases:
 
