@@ -402,12 +402,6 @@ Active development with published CLI packages and evolving documentation.
 |----------|-----------|------|
 | Specs are the source of truth | Keep intent durable across rewrites | Ongoing |
 
-## Open Questions
-
-- Should the CLI enforce any project layout beyond `specs/`?
-- What governance model should define future spec changes?
-- Which reference implementations should be prioritized?
-
 ## Legal Disclaimer
 
 This software, documentation, and any associated guidance are provided "AS IS" and "AS AVAILABLE" without warranties or conditions of any kind, express or implied, including but not limited to merchantability, fitness for a particular purpose, non-infringement, accuracy, or availability. You use Narrative Development and related tooling at your own risk. Tangelo Bilişim Ltd. and its contributors are not responsible for any actions you take or decisions you make based on outputs or recommendations.
