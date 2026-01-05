@@ -4,14 +4,9 @@
  */
 
 import { findNarrativeRoot, getDefaultPaths } from '../core/paths.js';
-import { join } from 'node:path';
 import { listFiles, safeReadFile } from '../core/fs.js';
 import { loadConfig } from '../core/config.js';
 import { analyzeStory } from '../spec/parser.js';
-import { runAI } from '../ai/runner.js';
-import { parseJsonFromOutput } from '../ai/parse.js';
-import { buildStatusSuggestionPrompt } from '../ai/prompts.js';
-import { startSpinner } from '../core/ui.js';
 
 /**
  * Report narrative health.
@@ -28,7 +23,7 @@ export default async function status(options) {
     process.exit(2);
   }
 
-  const { root: narrativeRoot, mode, repoRoot } = narRoot;
+  const { root: narrativeRoot, mode } = narRoot;
   const paths = getDefaultPaths(narrativeRoot);
   const config = await loadConfig(narrativeRoot);
 
@@ -112,62 +107,4 @@ export default async function status(options) {
   }
 
   console.log(`\nAI Provider: ${result.ai.provider} (${result.ai.configured ? 'configured' : 'not configured'})`);
-
-  if (!result.ai.configured) {
-    console.log('  Run `nara detect` to configure an AI provider');
-    return;
-  }
-
-  const manifestPath = join(narrativeRoot, 'specs', 'manifest.md');
-  const manifestContent = await safeReadFile(manifestPath);
-  const stateContent = await safeReadFile(`${narrativeRoot}/.nara/state.json`);
-  let lastIntent = '';
-  if (stateContent) {
-    try {
-      lastIntent = JSON.parse(stateContent).lastIntent || '';
-    } catch {
-      lastIntent = '';
-    }
-  }
-
-  if (!manifestContent) {
-    return;
-  }
-
-  const suggestionPrompt = buildStatusSuggestionPrompt({
-    manifestContent,
-    storyStats: result.stories,
-    lastIntent,
-  });
-
-  const stopSpinner = startSpinner('Generating AI suggestion...');
-  let aiResult;
-  try {
-    aiResult = await runAI(suggestionPrompt, config.ai);
-    stopSpinner();
-  } catch (err) {
-    stopSpinner();
-    console.log('AI suggestion unavailable.');
-    return;
-  }
-
-  if (aiResult.code !== 0 && !aiResult.stdout.trim()) {
-    console.log('AI suggestion unavailable.');
-    return;
-  }
-
-  let suggestion;
-  try {
-    suggestion = parseJsonFromOutput(aiResult.stdout);
-  } catch {
-    console.log('AI suggestion unavailable.');
-    return;
-  }
-
-  if (suggestion?.suggestion) {
-    console.log(`\nSuggestion: ${suggestion.suggestion}`);
-    if (suggestion.reason) {
-      console.log(`Reason: ${suggestion.reason}`);
-    }
-  }
 }
