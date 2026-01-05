@@ -10,7 +10,8 @@ import { readFile, writeFile, readdir } from 'node:fs/promises';
 import { join, basename, dirname } from 'node:path';
 import { input } from '@inquirer/prompts';
 import { getSeedDir, canAdopt } from '../core/paths.js';
-import { copyDir, copyDirWithPolicy, ensureDir, listFiles } from '../core/fs.js';
+import { copyDir, copyDirWithPolicy, ensureDir, listFiles, safeWriteFile } from '../core/fs.js';
+import { AI_START_TEMPLATE, STATE_TEMPLATE } from '../templates/ai-start.js';
 
 const DEFAULT_INDEX = `# Narrative Index
 
@@ -264,15 +265,8 @@ export default async function adopt(options) {
   }
 
   // Get project info
-  const projectName = options.name || await input({
-    message: 'Project name:',
-    default: basename(cwd),
-  });
-
-  const projectDesc = options.desc || await input({
-    message: 'Project description:',
-    default: 'An adopted Narrative Development project',
-  });
+  const projectName = options.name || basename(cwd);
+  const projectDesc = options.desc || 'An adopted Narrative Development project';
 
   console.log('\nAdopting codebase into Narrative Development...\n');
   console.log('All narrative artifacts will be created under nara/');
@@ -362,8 +356,17 @@ export default async function adopt(options) {
     overwrite: force,
   });
 
-  // Create .nara directory for local state
+  // Create .nara directory for local state in nara/
   await ensureDir(join(naraDir, '.nara'));
+
+  // Create state.json in nara/.nara/
+  const stateContent = { ...STATE_TEMPLATE, last_action: 'adopt' };
+  await safeWriteFile(join(naraDir, '.nara', 'state.json'), JSON.stringify(stateContent, null, 2) + '\n');
+
+  // Create AI-START.md in nara/
+  const aiStartContent = AI_START_TEMPLATE.replace('{{phase}}', 'setup');
+  await safeWriteFile(join(naraDir, 'AI-START.md'), aiStartContent);
+
 
   // Report what was created
   const files = await listFiles(naraDir);
@@ -381,8 +384,6 @@ export default async function adopt(options) {
   console.log('\n✓ Codebase adopted into Narrative Development');
   console.log(`  Narrative root: ${naraDir}`);
   console.log('\nNext steps:');
-  console.log('  1. Edit nara/specs/manifest.md to define your project scope');
-  console.log('  2. Run `nara detect` to configure AI tools');
-  console.log('  3. Run `nara story <subsystem.verb>` to create your first story');
-  console.log('\nOptional: Add nara/.nara/ to your .gitignore');
+  console.log('  1. Open AI assistant and point it to nara/AI-START.md');
+  console.log('  2. Follow the AI instructions');
 }
