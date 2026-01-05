@@ -47,6 +47,11 @@ nara init runs (informational only), or
 
 the first AI-assisted command is invoked and no provider is configured.
 
+Detection can also be triggered explicitly with:
+
+- `nara detect --force`
+- `nara --config`
+
 Step 1: Scan PATH
 
 nara checks for known executables in the following order:

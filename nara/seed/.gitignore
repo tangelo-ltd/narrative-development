@@ -1,8 +1,7 @@
-# nara local state
-.nara/
-
-# Dependencies
-**/node_modules/
+# Local state and user config
+config.json
+state.json
+ai-output.json
 
 # Generated output (if compilation is used)
 generated/

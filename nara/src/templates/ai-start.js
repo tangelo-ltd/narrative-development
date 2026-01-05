@@ -6,7 +6,7 @@ Welcome to Narrative Development.
 Phase: {{phase}}
 
 ## IMMEDIATE START
-1. **Read** \`specs/manifest.md\` and \`.nara/state.json\` NOW.
+1. **Read** \`specs/manifest.md\` and \`state.json\` NOW.
 2. **Check** for placeholders (like \`{{...}}\`) in the manifest.
 3. **If placeholders exist**:
    - ASK the user to clarify the intent (Intended Users, Primary Goal, Non-Goals, Project Type, Constraints).

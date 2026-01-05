@@ -8,10 +8,11 @@ nara supports two modes of operation:
 
 | Mode | Command | Narrative Root | Use Case |
 |------|---------|----------------|----------|
-| **Fresh repo** | `nara init` | Repository root | New projects built with Narrative Development |
-| **Existing codebase** | `nara adopt` | `nara/` subdirectory | Adding narratives to existing projects |
+| **Fresh repo** | `nara init` | `.nara/` directory | New projects built with Narrative Development |
+| **Existing codebase** | `nara adopt` | `.nara/` directory | Adding narratives to existing projects |
 
-When onboarding existing codebases, all narrative artifacts live under `nara/` and existing code is never modified.
+When onboarding existing codebases, all narrative artifacts live under `.nara/` and existing code is never modified.
+Normal project code remains in the repository root.
 
 ---
 
@@ -69,5 +70,6 @@ When onboarding existing codebases, all narrative artifacts live under `nara/` a
 | Manifesto | [/README.md](/README.md) | What Narrative Development is |
 | Roadmap | [/ROADMAP.md](/ROADMAP.md) | Version boundaries and future plans |
 | Implementation Guide | [/docs/PROJECT-SETUP.md](/docs/PROJECT-SETUP.md) | How to build nara |
-| Seed Templates | [/templates/seed/](/templates/seed/) | Files created by `nara init` |
+| Existing Code Onboarding (Summary) | [/NARA-EXISTING-CODE.md](/NARA-EXISTING-CODE.md) | Pointer to adopted codebase rules |
+| Seed Templates | [/nara/seed/](/nara/seed/) | Files created by `nara init` |
 | JSON Schemas | [/schemas/](/schemas/) | Machine-readable config schemas |

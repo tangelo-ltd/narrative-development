@@ -10,7 +10,9 @@ Start here for Narrative Development artifacts.
 - `specs/stories/` - atomic capability specs
 - `specs/glossary.md` - shared vocabulary
 
-## Adopted Codebases
+## Adopted Codebases (if present)
+
+These files exist only after `nara adopt`.
 
 - `specs/inventory/codebase-map.md` - current code reality
 - `reports/onboarding-report.md` - findings and questions

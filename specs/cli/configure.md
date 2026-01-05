@@ -38,7 +38,7 @@ nara configure ai.promptMode=stdin
 |------|--------|
 | `.nara/config.json` | Create or update |
 
-Creates `.nara/` directory if it doesn't exist.
+Requires `.nara/` to exist (run `nara init` or `nara adopt` first).
 
 ---
 

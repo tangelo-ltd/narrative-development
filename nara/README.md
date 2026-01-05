@@ -23,6 +23,8 @@ nara init
 nara init --name "My Project" --desc "A description"
 ```
 
+This creates a `.nara/` directory in the project root that contains all narrative artifacts.
+
 ### Detect AI tools
 
 ```bash
@@ -30,6 +32,12 @@ nara detect
 ```
 
 Scans for installed AI CLI tools (codex, claude, gemini) and configures your preference.
+
+To re-select interactively at any time:
+
+```bash
+nara --config
+```
 
 ### Configure settings
 

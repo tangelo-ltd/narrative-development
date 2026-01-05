@@ -13,6 +13,12 @@ This document defines the v0 command surface, flags, side effects, and exit beha
    - `1` = user or validation error
    - `2` = system or tool failure
 
+## Global Flags
+
+| Flag | Description |
+|------|-------------|
+| `--config` | Interactively select a detected AI provider (same flow as `nara detect --force`) |
+
 ---
 
 ## Narrative Root Resolution
@@ -21,11 +27,11 @@ Commands automatically detect the narrative root:
 
 | Detection | Narrative Root | Mode |
 |-----------|----------------|------|
-| `nara/NARA.md` exists | `nara/` | Adopted codebase |
-| `NARA.md` exists at repo root | Repository root | Fresh repo |
+| `.nara/NARA.md` exists | `.nara/` | Narrative root |
+| `.nara/nara.json` exists | `.nara/` | Narrative root |
 | Neither exists | Error (not a nara project) | — |
 
-All paths (`specs/`, `.nara/`, etc.) are relative to the narrative root.
+All paths (`specs/`, `config.json`, etc.) are relative to the narrative root.
 
 ---
 
@@ -37,8 +43,8 @@ Creates a fresh Narrative Development repository.
 
 | Aspect | Value |
 |--------|-------|
-| Writes | Seed files at repository root |
-| Fails if | `NARA.md` already exists |
+| Writes | Seed files under `.nara/` |
+| Fails if | `.nara/` already exists |
 | Flags | `--name`, `--desc`, `--yes` |
 
 Use for **new projects** where Narrative Development is primary from day one.
@@ -47,17 +53,17 @@ Use for **new projects** where Narrative Development is primary from day one.
 
 ### nara adopt
 
-Onboards an existing codebase by creating `nara/` narrative layer.
+Onboards an existing codebase by creating `.nara/` narrative layer.
 
 | Aspect | Value |
 |--------|-------|
-| Writes | All files under `nara/` only |
-| Fails if | `nara/` directory already exists (unless `--merge` or `--force`) |
+| Writes | All files under `.nara/` only |
+| Fails if | `.nara/` directory already exists (unless `--merge` or `--force`) |
 | Flags | `--name`, `--desc`, `--merge`, `--force`, `--inventory` |
 
 Use for **existing projects** to add Narrative Development without touching existing code.
 
-**Safety guarantee:** Never writes outside `nara/`.
+**Safety guarantee:** Never writes outside `.nara/`.
 
 ---
 
@@ -67,7 +73,7 @@ Detects installed AI CLIs and prompts user to choose if multiple are found.
 
 | Aspect | Value |
 |--------|-------|
-| Writes | `<narrativeRoot>/.nara/config.json` |
+| Writes | `<narrativeRoot>/config.json` |
 | Flags | `--force` |
 
 ---
@@ -78,7 +84,7 @@ Updates user configuration.
 
 | Aspect | Value |
 |--------|-------|
-| Writes | `<narrativeRoot>/.nara/config.json` |
+| Writes | `<narrativeRoot>/config.json` |
 
 ---
 

@@ -35,7 +35,7 @@
         "outputMode": {
           "type": "string",
           "enum": ["json", "sections", "raw"],
-          "default": "sections",
+          "default": "json",
           "description": "Expected output format"
         }
       },

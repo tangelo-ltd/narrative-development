@@ -16,6 +16,7 @@ const TokenPolicySchema = z.object({
  * Project configuration schema (nara.json)
  */
 export const ProjectConfigSchema = z.object({
+  narrativeRoot: z.string().default('.nara'),
   specRoot: z.string().default('specs'),
   conventionsIndex: z.string().default('specs/conventions/index.md'),
   storiesRoot: z.string().default('specs/stories'),
@@ -44,6 +45,7 @@ export const UserConfigSchema = z.object({
  * Merged configuration with all defaults applied
  */
 export const FullConfigSchema = z.object({
+  narrativeRoot: z.string(),
   specRoot: z.string(),
   conventionsIndex: z.string(),
   storiesRoot: z.string(),
@@ -70,12 +72,12 @@ async function loadJsonFile(path) {
 
 /**
  * Load and merge configuration from all sources.
- * @param {string} repoRoot - Repository root
+ * @param {string} narrativeRoot - Narrative root directory
  * @param {object} [cliFlags] - CLI flags to override config
  * @returns {Promise<object>} - Merged and validated configuration
  */
-export async function loadConfig(repoRoot, cliFlags = {}) {
-  const paths = getDefaultPaths(repoRoot);
+export async function loadConfig(narrativeRoot, cliFlags = {}) {
+  const paths = getDefaultPaths(narrativeRoot);
 
   // Load configs (may be null if files don't exist)
   const projectRaw = await loadJsonFile(paths.projectConfig);

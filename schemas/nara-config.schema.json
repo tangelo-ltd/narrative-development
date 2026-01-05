@@ -5,6 +5,11 @@
   "description": "Schema for nara.json project configuration file",
   "type": "object",
   "properties": {
+    "narrativeRoot": {
+      "type": "string",
+      "default": ".nara",
+      "description": "Base directory for narrative artifacts (repo-root relative)"
+    },
     "specRoot": {
       "type": "string",
       "default": "specs",

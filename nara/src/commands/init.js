@@ -54,16 +54,19 @@ export default async function init(options) {
 
   console.log('\nInitializing nara project...\n');
 
-  // Copy seed files to repository root
+  const narrativeRoot = join(cwd, '.nara');
+
+  // Copy seed files into .nara
   const seedDir = getSeedDir();
   if (!existsSync(seedDir)) {
     console.error('Error: Seed files not found. Is nara installed correctly?');
     process.exit(2);
   }
 
-  await copyDir(seedDir, cwd);
+  await ensureDir(narrativeRoot);
+  await copyDir(seedDir, narrativeRoot);
 
-  const manifestPath = join(cwd, 'specs', 'manifest.md');
+  const manifestPath = join(narrativeRoot, 'specs', 'manifest.md');
   if (existsSync(manifestPath)) {
     let manifest = await readFile(manifestPath, 'utf-8');
     manifest = manifest.replace(/\{\{project_name\}\}/g, projectName);
@@ -73,13 +76,12 @@ export default async function init(options) {
   }
 
   // Create nara.json config
-  const configPath = join(cwd, 'nara.json');
+  const configPath = join(narrativeRoot, 'nara.json');
   const projectConfig = {
-    narrativeRoot: '.',
+    narrativeRoot: '.nara',
     specRoot: 'specs',
     conventionsIndex: 'specs/conventions/index.md',
     storiesRoot: 'specs/stories',
-    mode: 'fresh',
     tokenPolicy: {
       maxFiles: 6,
       maxBytes: 120000,
@@ -88,24 +90,21 @@ export default async function init(options) {
   };
   await writeFile(configPath, JSON.stringify(projectConfig, null, 2) + '\n', 'utf-8');
 
-  // Create .nara directory for local state
-  await ensureDir(join(cwd, '.nara'));
-
   // Create state.json
   const stateContent = { ...STATE_TEMPLATE, last_action: 'init' };
-  await safeWriteFile(join(cwd, '.nara', 'state.json'), JSON.stringify(stateContent, null, 2) + '\n');
+  await safeWriteFile(join(narrativeRoot, 'state.json'), JSON.stringify(stateContent, null, 2) + '\n');
 
   // Create AI-START.md
   const aiStartContent = AI_START_TEMPLATE.replace('{{phase}}', 'setup');
-  await safeWriteFile(join(cwd, 'AI-START.md'), aiStartContent);
+  await safeWriteFile(join(narrativeRoot, 'AI-START.md'), aiStartContent);
 
   // Report what was created
-  const files = await listFiles(cwd);
+  const files = await listFiles(narrativeRoot);
   const createdFiles = files.filter(f => !f.includes('node_modules') && !f.includes('.git'));
 
   console.log('Created files:');
   for (const file of createdFiles.slice(0, 15)) {
-    const relative = file.replace(cwd + '/', '');
+    const relative = file.replace(narrativeRoot + '/', '.nara/');
     console.log(`  ${relative}`);
   }
   if (createdFiles.length > 15) {
@@ -114,11 +113,11 @@ export default async function init(options) {
 
   console.log('\n✓ nara project initialized');
 
-  const bootstrap = await detectAndBootstrapAI('Read AI-START.md and execute the "IMMEDIATE START" instructions.');
+  const bootstrap = await detectAndBootstrapAI('Read .nara/AI-START.md and execute the "IMMEDIATE START" instructions.');
 
   if (!bootstrap) {
     console.log('\nNext steps:');
-    console.log('  1. Open AI assistant and point it to AI-START.md');
+    console.log('  1. Open AI assistant and point it to .nara/AI-START.md');
     console.log('  2. Follow the AI instructions');
   }
 }

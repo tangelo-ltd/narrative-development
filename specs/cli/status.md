@@ -107,7 +107,7 @@ A story that has all required sections but has entries in Open Questions.
 |----------------|---------|
 | `specs/stories/**/*.md` | All story files |
 | `.nara/config.json` | AI provider status |
-| `nara.json` | Project configuration |
+| `.nara/nara.json` | Project configuration |
 | `specs/manifest.md` | Context for AI suggestions |
 | `.nara/state.json` | Last intent (if available) |
 

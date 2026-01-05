@@ -52,7 +52,7 @@ export default async function newStory(name) {
     }
   }
 
-  const { root: narrativeRoot, mode } = narRoot;
+  const { root: narrativeRoot } = narRoot;
   const paths = getDefaultPaths(narrativeRoot);
   let config = await loadConfig(narrativeRoot);
 
@@ -66,7 +66,7 @@ export default async function newStory(name) {
     }
   }
 
-  const statePath = `${narrativeRoot}/.nara/state.json`;
+  const statePath = `${narrativeRoot}/state.json`;
   const stateRaw = await safeReadFile(statePath);
   let lastIntent = '';
   if (stateRaw) {
@@ -174,7 +174,7 @@ export default async function newStory(name) {
     for (const error of validationResult.errors) {
       console.error(`- ${error}`);
     }
-    await safeWriteFile(`${narrativeRoot}/.nara/ai-output.json`, rawOutput);
+    await safeWriteFile(`${narrativeRoot}/ai-output.json`, rawOutput);
     console.error('Saved raw AI output to .nara/ai-output.json');
     process.exit(2);
   }
@@ -198,9 +198,7 @@ export default async function newStory(name) {
   await safeWriteFile(storyPath, content);
   await safeWriteFile(statePath, JSON.stringify({ lastIntent: intent.trim() }, null, 2) + '\n');
 
-  const displayPath = mode === 'adopted'
-    ? storyPath.replace(narrativeRoot, 'nara')
-    : storyPath.replace(narrativeRoot + '/', '');
+  const displayPath = storyPath.replace(narrativeRoot, '.nara');
 
   const openQuestions = payload.openQuestions || [];
 

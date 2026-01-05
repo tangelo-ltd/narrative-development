@@ -1,8 +1,8 @@
 /**
  * nara adopt command
- * Onboards an existing codebase by creating nara/ narrative layer.
+ * Onboards an existing codebase by creating .nara/ narrative layer.
  *
- * SAFETY: Never writes outside nara/ directory.
+ * SAFETY: Never writes outside .nara/ directory.
  */
 
 import { existsSync } from 'node:fs';
@@ -239,18 +239,18 @@ ${renderList(uniqueList(assumptions), 'None recorded.')}
 
 /**
  * Adopt an existing codebase into Narrative Development.
- * Creates all narrative artifacts under nara/ subdirectory.
+ * Creates all narrative artifacts under .nara/ subdirectory.
  *
  * @param {object} options - Command options
  * @param {string} [options.name] - Project name
  * @param {string} [options.desc] - Project description
- * @param {boolean} [options.merge] - Merge into existing nara/ directory
- * @param {boolean} [options.force] - Overwrite existing files under nara/
+ * @param {boolean} [options.merge] - Merge into existing .nara/ directory
+ * @param {boolean} [options.force] - Overwrite existing files under .nara/
  * @param {boolean} [options.inventory] - Run read-only inventory pass
  */
 export default async function adopt(options) {
   const cwd = process.cwd();
-  const naraDir = join(cwd, 'nara');
+  const narrativeRoot = join(cwd, '.nara');
   const merge = Boolean(options.merge);
   const force = Boolean(options.force);
   const runInventory = Boolean(options.inventory);
@@ -268,7 +268,7 @@ export default async function adopt(options) {
   const projectDesc = options.desc || 'An adopted Narrative Development project';
 
   console.log('\nAdopting codebase into Narrative Development...\n');
-  console.log('All narrative artifacts will be created under nara/');
+  console.log('All narrative artifacts will be created under .nara/');
   console.log('Existing code will NOT be modified.\n');
   if (merge) {
     console.log('Mode: merge (existing files will be preserved)\n');
@@ -276,13 +276,13 @@ export default async function adopt(options) {
     console.log('Mode: force (existing files may be overwritten)\n');
   }
 
-  // Create nara/ directory
-  await ensureDir(naraDir);
+  // Create .nara/ directory
+  await ensureDir(narrativeRoot);
 
-  const manifestPath = join(naraDir, 'specs', 'manifest.md');
+  const manifestPath = join(narrativeRoot, 'specs', 'manifest.md');
   const manifestExistsBefore = existsSync(manifestPath);
 
-  // Copy seed files into nara/
+  // Copy seed files into .nara/
   const seedDir = getSeedDir();
   if (!existsSync(seedDir)) {
     console.error('Error: Seed files not found. Is nara installed correctly?');
@@ -290,11 +290,11 @@ export default async function adopt(options) {
   }
 
   if (force) {
-    await copyDir(seedDir, naraDir);
+    await copyDir(seedDir, narrativeRoot);
   } else if (merge) {
-    await copyDirWithPolicy(seedDir, naraDir, { overwrite: false });
+    await copyDirWithPolicy(seedDir, narrativeRoot, { overwrite: false });
   } else {
-    await copyDir(seedDir, naraDir);
+    await copyDir(seedDir, narrativeRoot);
   }
 
   // Substitute placeholders in manifest.md
@@ -306,14 +306,13 @@ export default async function adopt(options) {
     await writeFile(manifestPath, manifest, 'utf-8');
   }
 
-  // Create nara.json with adopted mode marker
-  const configPath = join(naraDir, 'nara.json');
+  // Create nara.json
+  const configPath = join(narrativeRoot, 'nara.json');
   const config = {
-    narrativeRoot: '.',
+    narrativeRoot: '.nara',
     specRoot: 'specs',
     conventionsIndex: 'specs/conventions/index.md',
     storiesRoot: 'specs/stories',
-    mode: 'adopted',
     tokenPolicy: {
       maxFiles: 6,
       maxBytes: 120000,
@@ -327,11 +326,11 @@ export default async function adopt(options) {
   );
 
   // Ensure INDEX.md exists
-  await writeTemplateFile(join(naraDir, 'INDEX.md'), DEFAULT_INDEX, { overwrite: force });
+  await writeTemplateFile(join(narrativeRoot, 'INDEX.md'), DEFAULT_INDEX, { overwrite: force });
 
   // Create inventory and reports scaffolding
-  const inventoryDir = join(naraDir, 'specs', 'inventory');
-  const reportsDir = join(naraDir, 'reports');
+  const inventoryDir = join(narrativeRoot, 'specs', 'inventory');
+  const reportsDir = join(narrativeRoot, 'reports');
   await ensureDir(inventoryDir);
   await ensureDir(reportsDir);
 
@@ -345,7 +344,7 @@ export default async function adopt(options) {
   if (runInventory && !wroteInventory && !force) {
     console.log('Skipped inventory generation (codebase-map.md already exists).');
   } else if (runInventory && wroteInventory) {
-    console.log('Generated inventory: nara/specs/inventory/codebase-map.md');
+    console.log('Generated inventory: .nara/specs/inventory/codebase-map.md');
   }
 
   await writeTemplateFile(join(reportsDir, 'onboarding-report.md'), DEFAULT_ONBOARDING_REPORT, {
@@ -355,34 +354,31 @@ export default async function adopt(options) {
     overwrite: force,
   });
 
-  // Create .nara directory for local state in nara/
-  await ensureDir(join(naraDir, '.nara'));
-
-  // Create state.json in nara/.nara/
+  // Create state.json
   const stateContent = { ...STATE_TEMPLATE, last_action: 'adopt' };
-  await safeWriteFile(join(naraDir, '.nara', 'state.json'), JSON.stringify(stateContent, null, 2) + '\n');
+  await safeWriteFile(join(narrativeRoot, 'state.json'), JSON.stringify(stateContent, null, 2) + '\n');
 
-  // Create AI-START.md in nara/
+  // Create AI-START.md in .nara/
   const aiStartContent = AI_START_TEMPLATE.replace('{{phase}}', 'setup');
-  await safeWriteFile(join(naraDir, 'AI-START.md'), aiStartContent);
+  await safeWriteFile(join(narrativeRoot, 'AI-START.md'), aiStartContent);
 
 
   // Report what was created
-  const files = await listFiles(naraDir);
+  const files = await listFiles(narrativeRoot);
   const createdFiles = files.filter(f => !f.includes('node_modules'));
 
-  console.log('Created files under nara/:');
+  console.log('Created files under .nara/:');
   for (const file of createdFiles.slice(0, 15)) {
-    const relative = file.replace(naraDir + '/', '');
-    console.log(`  nara/${relative}`);
+    const relative = file.replace(narrativeRoot + '/', '');
+    console.log(`  .nara/${relative}`);
   }
   if (createdFiles.length > 15) {
     console.log(`  ... and ${createdFiles.length - 15} more`);
   }
 
   console.log('\n✓ Codebase adopted into Narrative Development');
-  console.log(`  Narrative root: ${naraDir}`);
+  console.log(`  Narrative root: ${narrativeRoot}`);
   console.log('\nNext steps:');
-  console.log('  1. Open AI assistant and point it to nara/AI-START.md');
+  console.log('  1. Open AI assistant and point it to .nara/AI-START.md');
   console.log('  2. Follow the AI instructions');
 }

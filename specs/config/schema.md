@@ -15,7 +15,7 @@ nara uses two configuration layers.
 | Property | Value |
 |----------|-------|
 | File | `nara.json` |
-| Location | repository root |
+| Location | `.nara/` directory |
 | Versioned | YES |
 | Purpose | project-wide conventions and paths |
 
@@ -23,7 +23,7 @@ nara uses two configuration layers.
 
 | Property | Value |
 |----------|-------|
-| File | `.nara/config.json` |
+| File | `config.json` |
 | Location | `.nara/` directory |
 | Versioned | NO (gitignored) |
 | Purpose | user-specific preferences (AI tools) |
@@ -32,12 +32,12 @@ nara uses two configuration layers.
 
 ## Narrative Root
 
-The **narrative root** is the base directory for all narrative artifacts. It varies by project mode:
+The **narrative root** is the base directory for all narrative artifacts. It is always `.nara/`, so normal project code stays in the repository root.
 
 | Mode | Narrative Root | Config Location |
 |------|----------------|-----------------|
-| Fresh repo (`nara init`) | Repository root | `nara.json` |
-| Existing codebase (`nara adopt`) | `nara/` subdirectory | `nara/nara.json` |
+| Fresh repo (`nara init`) | `.nara/` directory | `.nara/nara.json` |
+| Existing codebase (`nara adopt`) | `.nara/` directory | `.nara/nara.json` |
 
 All paths in configuration are **relative to the narrative root**, not the repository root.
 
@@ -47,7 +47,7 @@ All paths in configuration are **relative to the narrative root**, not the repos
 
 ```json
 {
-  "narrativeRoot": ".",
+  "narrativeRoot": ".nara",
   "specRoot": "specs",
   "conventionsIndex": "specs/conventions/index.md",
   "storiesRoot": "specs/stories",
@@ -63,7 +63,7 @@ All paths in configuration are **relative to the narrative root**, not the repos
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `narrativeRoot` | string | `"."` | Base directory for narrative artifacts (auto-detected) |
+| `narrativeRoot` | string | `".nara"` | Base directory for narrative artifacts (auto-detected) |
 | `specRoot` | string | `"specs"` | Canonical root of all specifications (relative to narrativeRoot) |
 | `conventionsIndex` | string | `"specs/conventions/index.md"` | Single entry point for all rules |
 | `storiesRoot` | string | `"specs/stories"` | Default location for story files |
@@ -92,7 +92,7 @@ Token policy is **advisory**. nara truncates context at these limits but cannot 
     "command": "claude",
     "args": [],
     "promptMode": "stdin",
-    "outputMode": "sections"
+    "outputMode": "json"
   }
 }
 ```
@@ -132,6 +132,7 @@ All defaults in one place for implementation reference:
 
 ```json
 {
+  "narrativeRoot": ".nara",
   "specRoot": "specs",
   "conventionsIndex": "specs/conventions/index.md",
   "storiesRoot": "specs/stories",

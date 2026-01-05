@@ -15,7 +15,8 @@ import resume from './commands/resume.js';
 program
   .name('nara')
   .description('Narrative Development CLI - intent-first specs for human + AI collaboration')
-  .version('0.0.1');
+  .version('0.0.1')
+  .option('--config', 'Interactively select an AI provider');
 
 program
   .command('init')
@@ -27,11 +28,11 @@ program
 
 program
   .command('adopt')
-  .description('Onboard existing codebase (creates nara/ narrative layer)')
+  .description('Onboard existing codebase (creates .nara/ narrative layer)')
   .option('--name <name>', 'Project name')
   .option('--desc <description>', 'Project description')
-  .option('--merge', 'Merge into existing nara/ directory without overwriting')
-  .option('--force', 'Overwrite existing files under nara/')
+  .option('--merge', 'Merge into existing .nara/ directory without overwriting')
+  .option('--force', 'Overwrite existing files under .nara/')
   .option('--inventory', 'Run a read-only inventory pass')
   .action(adopt);
 
@@ -63,7 +64,10 @@ program
   .option('--verbose', 'Show full details')
   .action(status);
 
-if (process.argv.length <= 2) {
+const argv = process.argv.slice(2);
+if (argv.includes('--config')) {
+  await detect({ force: true });
+} else if (process.argv.length <= 2) {
   const rootInfo = findNarrativeRoot(process.cwd());
   if (rootInfo) {
     await resume();

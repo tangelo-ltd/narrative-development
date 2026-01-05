@@ -36,10 +36,10 @@ AI MUST NOT:
 
 AI Entry Points (AGENTS.md)
 
-Projects MUST provide an `AGENTS.md` file at the narrative root. It MUST:
+Projects MUST provide an `AGENTS.md` file at the narrative root (`.nara/`). It MUST:
 
 - Point AI to `INDEX.md` first
-- State that canonical narrative artifacts live under `specs/`
+- State that canonical narrative artifacts live under `.nara/specs/`
 - Forbid code edits unless explicitly requested by the user
 - Enforce token efficiency (load the minimum files needed)
 

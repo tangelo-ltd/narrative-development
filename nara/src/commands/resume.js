@@ -11,11 +11,11 @@ export default async function resume() {
   const rootInfo = findNarrativeRoot(cwd);
 
   if (!rootInfo) {
-    console.error('Error: Not a valid nara project (could not find NARA.md or nara/NARA.md).');
+    console.error('Error: Not a valid nara project (could not find .nara/NARA.md).');
     process.exit(1);
   }
 
-  const statePath = join(rootInfo.root, '.nara', 'state.json');
+  const statePath = join(rootInfo.root, 'state.json');
   const aiStartPath = join(rootInfo.root, 'AI-START.md');
 
   // Calculate relative paths for cleaner prompts if possible

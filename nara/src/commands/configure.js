@@ -120,7 +120,7 @@ export default async function configure(setting) {
     process.exit(2);
   }
 
-  const { root: narrativeRoot, mode } = narRoot;
+  const { root: narrativeRoot } = narRoot;
   const paths = getDefaultPaths(narrativeRoot);
 
   // Load existing config
@@ -140,9 +140,7 @@ export default async function configure(setting) {
   // Write config
   await safeWriteFile(paths.userConfig, JSON.stringify(config, null, 2) + '\n');
 
-  const displayPath = mode === 'adopted'
-    ? paths.userConfig.replace(narrativeRoot, 'nara')
-    : paths.userConfig.replace(narrativeRoot + '/', '');
+  const displayPath = paths.userConfig.replace(narrativeRoot, '.nara');
 
   console.log(`✓ Set ${key} = ${value}`);
   console.log(`  Config saved to: ${displayPath}`);

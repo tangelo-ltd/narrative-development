@@ -24,7 +24,6 @@ export function getSeedDir() {
  * Narrative root detection result.
  * @typedef {Object} NarrativeRoot
  * @property {string} root - Absolute path to narrative root
- * @property {'fresh'|'adopted'} mode - Whether this is a fresh repo or adopted codebase
  * @property {string} repoRoot - Absolute path to repository root
  */
 
@@ -32,8 +31,8 @@ export function getSeedDir() {
  * Find the narrative root by looking for nara markers.
  *
  * Detection priority:
- * 1. nara/NARA.md exists -> adopted mode, narrative root is nara/
- * 2. NARA.md exists at repo root -> fresh mode, narrative root is repo root
+ * 1. .nara/NARA.md exists -> narrative root is .nara/
+ * 2. .nara/nara.json exists -> narrative root is .nara/
  *
  * @param {string} [startDir] - Directory to start searching from (default: cwd)
  * @returns {NarrativeRoot|null} - Narrative root info or null if not found
@@ -43,42 +42,20 @@ export function findNarrativeRoot(startDir = process.cwd()) {
   const fsRoot = dirname(dir);
 
   while (dir !== fsRoot) {
-    // Check for adopted mode first (nara/ subdirectory)
-    const adoptedPath = join(dir, 'nara', 'NARA.md');
-    if (existsSync(adoptedPath)) {
+    // Check for narrative root (.nara/ subdirectory)
+    const narrativeMarker = join(dir, '.nara', 'NARA.md');
+    if (existsSync(narrativeMarker)) {
       return {
-        root: join(dir, 'nara'),
-        mode: 'adopted',
-        repoRoot: dir,
-      };
-    }
-
-    // Check for fresh mode (NARA.md at this level)
-    const freshPath = join(dir, 'NARA.md');
-    if (existsSync(freshPath)) {
-      return {
-        root: dir,
-        mode: 'fresh',
+        root: join(dir, '.nara'),
         repoRoot: dir,
       };
     }
 
     // Also check for nara.json as fallback marker
-    const configPath = join(dir, 'nara.json');
-    const adoptedConfigPath = join(dir, 'nara', 'nara.json');
-
-    if (existsSync(adoptedConfigPath)) {
-      return {
-        root: join(dir, 'nara'),
-        mode: 'adopted',
-        repoRoot: dir,
-      };
-    }
-
+    const configPath = join(dir, '.nara', 'nara.json');
     if (existsSync(configPath)) {
       return {
-        root: dir,
-        mode: 'fresh',
+        root: join(dir, '.nara'),
         repoRoot: dir,
       };
     }
@@ -121,27 +98,27 @@ export function getDefaultPaths(narrativeRoot) {
     specs: resolvePath(narrativeRoot, 'specs'),
     stories: resolvePath(narrativeRoot, 'specs', 'stories'),
     conventions: resolvePath(narrativeRoot, 'specs', 'conventions'),
-    userConfig: resolvePath(narrativeRoot, '.nara', 'config.json'),
+    userConfig: resolvePath(narrativeRoot, 'config.json'),
     projectConfig: resolvePath(narrativeRoot, 'nara.json'),
   };
 }
 
 /**
- * Check if a directory can be adopted (handles existing nara/ folder).
+ * Check if a directory can be adopted (handles existing .nara/ folder).
  * @param {string} dir - Directory to check
  * @param {object} [options] - Adoption options
- * @param {boolean} [options.merge] - Allow merging into existing nara/
+ * @param {boolean} [options.merge] - Allow merging into existing .nara/
  * @param {boolean} [options.force] - Allow overwriting existing files
  * @returns {{ canAdopt: boolean, reason?: string }}
  */
 export function canAdopt(dir, options = {}) {
   const { merge = false, force = false } = options;
-  const naraDir = join(dir, 'nara');
-  if (existsSync(naraDir)) {
+  const narrativeDir = join(dir, '.nara');
+  if (existsSync(narrativeDir)) {
     if (merge || force) {
       return { canAdopt: true };
     }
-    return { canAdopt: false, reason: 'nara/ directory already exists' };
+    return { canAdopt: false, reason: '.nara/ directory already exists' };
   }
   return { canAdopt: true };
 }
@@ -152,11 +129,11 @@ export function canAdopt(dir, options = {}) {
  * @returns {{ canInit: boolean, reason?: string }}
  */
 export function canInit(dir) {
-  if (existsSync(join(dir, 'NARA.md'))) {
-    return { canInit: false, reason: 'NARA.md already exists (already a nara project)' };
+  if (existsSync(join(dir, '.nara', 'NARA.md'))) {
+    return { canInit: false, reason: '.nara/NARA.md exists (already a nara project)' };
   }
-  if (existsSync(join(dir, 'nara', 'NARA.md'))) {
-    return { canInit: false, reason: 'nara/NARA.md exists (use existing adopted project)' };
+  if (existsSync(join(dir, '.nara', 'nara.json'))) {
+    return { canInit: false, reason: '.nara/nara.json exists (already a nara project)' };
   }
   return { canInit: true };
 }

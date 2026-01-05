@@ -52,57 +52,60 @@ npx nara init
 
 ## Project Structure
 
+The CLI implementation is canonical under `nara/`.
+
 ```
-src/
-  cli.js                    # entrypoint, command registration
-  commands/
-    init.js
-    newStory.js
-    detect.js
-    configure.js
-    status.js
-  core/
-    paths.js                # repo root discovery, path conventions
-    config.js               # load/merge/validate config
-    templates.js            # seed templates for init
-    fs.js                   # safe file read/write helpers
-  ai/
-    adapters/
-      codex.js
-      claude.js
-      gemini.js
-      custom.js
-    invoke.js               # execute adapter, capture stdout
-  spec/
-    id.js                   # story id rules
-    naming.js               # name validation
-    storyTemplate.js        # template rendering
+nara/
+  src/
+    cli.js                    # entrypoint, command registration
+    commands/
+      init.js
+      newStory.js
+      detect.js
+      configure.js
+      status.js
+    core/
+      paths.js                # repo root discovery, path conventions
+      config.js               # load/merge/validate config
+      templates.js            # seed templates for init
+      fs.js                   # safe file read/write helpers
+    ai/
+      adapters/
+        codex.js
+        claude.js
+        gemini.js
+        custom.js
+      invoke.js               # execute adapter, capture stdout
+    spec/
+      id.js                   # story id rules
+      naming.js               # name validation
+      storyTemplate.js        # template rendering
 
-seed/                       # the init skeleton, copied into new projects
-  AGENTS.md
-  NARA.md
-  specs/
-    manifest.md
-    glossary.md
-    conventions/
-      index.md
-      atomic-stories.md
-      rfc-keywords.md
-      naming-and-ids.md
-    stories/
-      _template.md
-  .gitignore
+  seed/                       # the init skeleton, copied into new projects
+    AGENTS.md
+    NARA.md
+    specs/
+      manifest.md
+      glossary.md
+      conventions/
+        index.md
+        atomic-stories.md
+        rfc-keywords.md
+        naming-and-ids.md
+      stories/
+        _template.md
+    .gitignore
 
-tests/
-  init.test.js              # golden file checks
-  detect.test.js            # mock PATH
-  newStory.test.js          # file placement and content
+  tests/
+    init.test.js              # golden file checks
+    detect.test.js            # mock PATH
+    newStory.test.js          # file placement and content
 
-README.md                   # tool repo README
-LICENSE
+  README.md                   # tool repo README
+  LICENSE
 ```
 
-**Note:** Keeping `seed/` checked in makes `nara init` deterministic and easy to test.
+**Note:** Keeping `nara/seed/` checked in makes `nara init` deterministic and easy to test.
 
 ---
 
@@ -174,18 +177,18 @@ npm publish
 2. **User choice when multiple AI CLIs detected** — prompt and persist to `.nara/config.json`
 3. **Token efficiency** — pass minimal context, point to conventions
 4. **Scoped file writes per command:**
-   - `init`: writes seed skeleton only
-   - `new story`: writes only the new story file
+   - `init`: writes seed skeleton under `.nara/`
+   - `story`: writes only the new story file
    - `detect`/`configure`: writes config only
 
 ---
 
 ## Next Implementation Milestones
 
-1. Implement `nara init` using seed/ copy + small substitutions (project name/desc)
+1. Implement `nara init` using `nara/seed/` copy + small substitutions (project name/desc)
 2. Implement `nara detect` (PATH scanning, prompt if multiple, persist config)
 3. Implement `nara configure` (write config fields safely)
-4. Implement `nara new story` interactive capture (no AI required initially)
+4. Implement `nara story` interactive capture (no AI required initially)
 5. Implement `nara status` (list stories, open questions)
 
 This is sufficient to ship an installable v0 to npm and start getting real user feedback.

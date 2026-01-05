@@ -10,7 +10,7 @@ From highest to lowest priority:
 
 1. **CLI flags** — explicit command-line arguments
 2. **User config** — `.nara/config.json`
-3. **Project config** — `nara.json`
+3. **Project config** — `.nara/nara.json`
 4. **Built-in defaults** — hardcoded in nara
 
 Later layers override earlier ones **field-by-field** (shallow merge).
@@ -22,7 +22,7 @@ Later layers override earlier ones **field-by-field** (shallow merge).
 Given:
 
 ```json
-// nara.json (project)
+// .nara/nara.json (project)
 {
   "specRoot": "specifications",
   "tokenPolicy": { "maxFiles": 10 }
@@ -37,7 +37,7 @@ Given:
 And CLI invocation:
 
 ```
-nara new story auth.login --ai gemini
+nara story auth.login --ai gemini
 ```
 
 Resolved configuration:

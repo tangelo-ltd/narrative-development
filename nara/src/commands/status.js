@@ -23,7 +23,7 @@ export default async function status(options) {
     process.exit(2);
   }
 
-  const { root: narrativeRoot, mode } = narRoot;
+  const { root: narrativeRoot } = narRoot;
   const paths = getDefaultPaths(narrativeRoot);
   const config = await loadConfig(narrativeRoot);
 
@@ -51,8 +51,7 @@ export default async function status(options) {
 
   // Build result
   const result = {
-    narrativeRoot: mode === 'adopted' ? 'nara/' : '.',
-    mode,
+    narrativeRoot: '.nara/',
     stories: {
       total: analyses.length,
       complete: complete.length,
@@ -83,7 +82,7 @@ export default async function status(options) {
 
   // Human-readable output
   console.log('nara status\n');
-  console.log(`Narrative root: ${result.narrativeRoot} (${mode} mode)`);
+  console.log(`Narrative root: ${result.narrativeRoot}`);
 
   console.log(`\nStories: ${result.stories.total}`);
   console.log(`  Complete: ${result.stories.complete}`);

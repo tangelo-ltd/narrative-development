@@ -1,12 +1,12 @@
 # nara adopt
 
-Onboards an existing codebase into Narrative Development by creating a `nara/` narrative layer.
+Onboards an existing codebase into Narrative Development by creating a `.nara/` narrative layer.
 
 ---
 
 ## Purpose
 
-`nara adopt` adds Narrative Development to an existing project **without modifying any existing files**. All narrative artifacts are created under a top-level `nara/` directory, parallel to existing source code.
+`nara adopt` adds Narrative Development to an existing project **without modifying any existing files**. All narrative artifacts are created under a top-level `.nara/` directory, parallel to existing source code.
 
 This is the canonical way to introduce Narrative Development to an existing codebase.
 
@@ -24,27 +24,27 @@ nara adopt [options]
 |------|-------------|
 | `--name <name>` | Project name (default: directory name) |
 | `--desc <description>` | Project description |
-| `--merge` | Populate missing files when `nara/` already exists (never overwrites) |
-| `--force` | Overwrite existing files under `nara/` |
+| `--merge` | Populate missing files when `.nara/` already exists (never overwrites) |
+| `--force` | Overwrite existing files under `.nara/` |
 | `--inventory` | Run a read-only inventory pass and populate `specs/inventory/codebase-map.md` |
 
 ---
 
 ## What Gets Created
 
-All files are created under `nara/` in the repository root:
+All files are created under `.nara/` in the repository root:
 
 ```
 existing-project/
 ├── src/                    # Existing code (UNTOUCHED)
 ├── package.json            # Existing config (UNTOUCHED)
 ├── ...                     # Other existing files (UNTOUCHED)
-└── nara/                   # NEW: Narrative layer
+└── .nara/                   # NEW: Narrative layer
     ├── INDEX.md            # Single entry point
     ├── AGENTS.md           # AI entry point
     ├── NARA.md             # Tooling contract
     ├── nara.json           # Project config
-    ├── .gitignore          # Ignores .nara/ state
+    ├── .gitignore          # Ignores local state (config.json, state.json)
     ├── reports/            # Onboarding findings
     │   ├── onboarding-report.md
     │   └── issues.md
@@ -65,7 +65,7 @@ existing-project/
 Optional (not created by default):
 
 ```
-nara/generated/
+.nara/generated/
 ```
 
 ---
@@ -74,9 +74,9 @@ nara/generated/
 
 `nara adopt` MUST:
 
-1. **Never write outside `nara/`** — existing code is untouched
+1. **Never write outside `.nara/`** — existing code is untouched
 2. **Never overwrite existing files** unless `--merge` or `--force` is provided
-3. **Never overwrite `nara/AGENTS.md`** unless `--force` is provided
+3. **Never overwrite `.nara/AGENTS.md`** unless `--force` is provided
 4. **Never modify repository root files** (including root `.gitignore`)
 5. **Never assume project structure** — works with any codebase
 
@@ -86,11 +86,11 @@ nara/generated/
 
 Before writing files:
 
-- If `nara/` exists: fail unless `--merge` or `--force` is provided
-- If `nara/AGENTS.md` exists: never overwrite unless `--force`
+- If `.nara/` exists: fail unless `--merge` or `--force` is provided
+- If `.nara/AGENTS.md` exists: never overwrite unless `--force`
 - If filesystem permissions prevent writes: fail with an actionable error
 
-`--merge` adds missing seed files only. `--force` overwrites any existing files under `nara/`.
+`--merge` adds missing seed files only. `--force` overwrites any existing files under `.nara/`.
 
 ---
 
@@ -99,7 +99,7 @@ Before writing files:
 When `--inventory` is provided, `nara adopt` performs a **read-only** analysis pass and writes:
 
 ```
-nara/specs/inventory/codebase-map.md
+.nara/specs/inventory/codebase-map.md
 ```
 
 The inventory pass MUST:
@@ -150,7 +150,7 @@ See [files/formats.md](../files/formats.md) for section rules.
 After mirroring, `nara adopt` SHOULD generate an onboarding report:
 
 ```
-nara/reports/onboarding-report.md
+.nara/reports/onboarding-report.md
 ```
 
 The report may include:
@@ -171,7 +171,7 @@ The report MUST separate:
 Follow-up issues may be tracked in:
 
 ```
-nara/reports/issues.md
+.nara/reports/issues.md
 ```
 
 ---
@@ -179,10 +179,10 @@ nara/reports/issues.md
 ## Detection
 
 After `nara adopt`, the project is detected as a nara project by the presence of:
-- `nara/NARA.md`, or
-- `nara/nara.json`
+- `.nara/NARA.md`, or
+- `.nara/nara.json`
 
-All subsequent commands (`story`, `status`, `detect`, etc.) automatically use `nara/` as the narrative root.
+All subsequent commands (`story`, `status`, `detect`, etc.) automatically use `.nara/` as the narrative root.
 
 ---
 
@@ -191,7 +191,7 @@ All subsequent commands (`story`, `status`, `detect`, etc.) automatically use `n
 | Code | Meaning |
 |------|---------|
 | 0 | Adoption successful |
-| 1 | Unsafe state (existing `nara/` without merge/force, invalid flags) |
+| 1 | Unsafe state (existing `.nara/` without merge/force, invalid flags) |
 | 2 | Write failure |
 
 ---
@@ -201,9 +201,9 @@ All subsequent commands (`story`, `status`, `detect`, etc.) automatically use `n
 | Aspect | `nara init` | `nara adopt` |
 |--------|-------------|--------------|
 | Use case | Fresh Narrative Development repo | Existing codebase |
-| Narrative root | Repository root | `nara/` subdirectory |
-| Files at root | AGENTS.md, NARA.md, specs/ | Only creates `nara/` |
-| Existing files | Fails if NARA.md exists | Never touches existing files |
+| Narrative root | `.nara/` directory | `.nara/` directory |
+| Files at root | None (narrative files live in `.nara/`) | None (narrative files live in `.nara/`) |
+| Existing files | Fails if `.nara/` exists | Never touches existing files |
 
 ---
 
@@ -213,11 +213,11 @@ All subsequent commands (`story`, `status`, `detect`, etc.) automatically use `n
 cd ~/projects/my-existing-app
 nara adopt --name "My App" --desc "Backend API service"
 
-# Creates nara/ with full narrative structure
+# Creates .nara/ with full narrative structure
 # Existing src/, package.json, etc. are untouched
 
 nara status
-# Reports: Narrative root: nara/
+# Reports: Narrative root: .nara/
 #          Stories: 0
 ```
 
@@ -225,7 +225,7 @@ nara status
 
 ## Implementation Notes
 
-- Create `nara/` directory first
-- Copy seed files into `nara/` (not repo root)
-- Set `narrativeRoot: "nara"` in `nara/nara.json`
+- Create `.nara/` directory first
+- Copy seed files into `.nara/` (not repo root)
+- Set `narrativeRoot: ".nara"` in `.nara/nara.json`
 - All paths in config are relative to narrative root

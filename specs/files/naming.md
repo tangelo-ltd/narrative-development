@@ -117,7 +117,7 @@ specs/
 
 ### Creating New Subsystems
 
-`nara new story` creates the subsystem directory automatically if it doesn't exist.
+`nara story` creates the subsystem directory automatically if it doesn't exist.
 
 ### Index Files (Optional)
 

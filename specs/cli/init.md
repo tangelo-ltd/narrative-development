@@ -8,7 +8,7 @@ Creates a fresh Narrative Development repository from scratch.
 
 Use `nara init` when starting a **new project** where Narrative Development is the primary methodology from day one.
 
-For **existing codebases**, use [`nara adopt`](adopt.md) instead, which creates narrative artifacts under `nara/` without touching existing files.
+For **existing codebases**, use [`nara adopt`](adopt.md) instead, which creates narrative artifacts under `.nara/` without touching existing files.
 
 ---
 
@@ -22,7 +22,7 @@ For **existing codebases**, use [`nara adopt`](adopt.md) instead, which creates 
 - Minimize upfront structure and token usage
 
 No code is generated.
-No AI calls are made.
+AI calls MAY be made for manifest capture when configured.
 No assumptions about architecture or stack are introduced.
 
 ## Command
@@ -69,9 +69,9 @@ Core Guarantees
 
 After nara init:
 
-The repository has a single canonical source of truth (specs/)
+The repository has a single canonical source of truth (`.nara/specs/`)
 
-AI tools know where to look and what rules to follow (AGENTS.md)
+AI tools know where to look and what rules to follow (`.nara/AGENTS.md`)
 
 Specifications are written as atomic, testable stories
 
@@ -80,8 +80,9 @@ The project can grow organically through conversation and iteration
 Files and Folders Created
 Repository Root
 
-README.md
-The Narrative Development manifesto (already defined elsewhere).
+Normal project code lives at the repository root. Narrative artifacts live under `.nara/`.
+
+Narrative Root (.nara/)
 
 INDEX.md
 Single entry point for narrative artifacts.
@@ -102,16 +103,13 @@ rules for generated output
 extension points
 
 .gitignore
-Defaults to ignoring generated and local state.
-
-.nara/
-Local tool state (optional, may be gitignored).
+Ignores local state files under `.nara/`.
 
 Canonical Specification Root
 
-specs/ is the only authoritative source of system intent.
+`.nara/specs/` is the only authoritative source of system intent.
 
-Nothing outside specs/ defines what the system is supposed to do.
+Nothing outside `.nara/specs/` defines what the system is supposed to do.
 
 Contents created by nara init:
 
@@ -260,9 +258,9 @@ nara init creates a minimal, pointer-based AGENTS.md to reduce token usage.
 
 It MUST:
 
-Declare that specs/ is canonical
+Declare that `.nara/specs/` is canonical
 
-Instruct AI to read specs/conventions/index.md
+Instruct AI to read `.nara/specs/conventions/index.md`
 
 Prohibit inventing requirements
 
@@ -312,7 +310,7 @@ Does not enforce structure beyond invariants
 
 Structure emerges later via:
 
-nara new story
+nara story
 
 nara ask
 
@@ -347,4 +345,4 @@ define AGENTS.md exact contents (copy-paste ready),
 
 define specs/conventions/index.md exactly,
 
-or define nara new story behavior step by step.
+or define nara story behavior step by step.
