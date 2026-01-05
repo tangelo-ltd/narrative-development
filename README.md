@@ -2,6 +2,38 @@
 
 Intent-first software development where specifications are the source of truth and code is a derived artifact.
 
+## Install
+
+Prerequisites:
+
+- Node.js >= 18
+- npm
+
+Steps:
+
+1. Clone this repo or download the ZIP from GitHub.
+2. Make the install script executable:
+   `chmod +x install.sh`
+3. Run the installer (may prompt for sudo):
+   `./install.sh`
+
+The script installs dependencies and creates machine-wide commands in `/usr/local/bin`:
+
+- `nara`
+- `narra`
+- `nd`
+
+Verify with:
+
+`nara --help`
+
+Uninstall:
+
+1. Make the uninstall script executable:
+   `chmod +x uninstall.sh`
+2. Run the uninstaller (may prompt for sudo):
+   `./uninstall.sh`
+
 ## Mental Model
 
 - `nara` is the contract.
