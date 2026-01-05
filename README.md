@@ -287,6 +287,33 @@ Narrative Development follows an explicit loop:
 
 The narrative drives the process. The code remains provisional.
 
+## Narrative Development Protocol (NDP)
+
+The Narrative Development Protocol (NDP) is the formal specification layer that defines how narrative intent is captured, structured, and evolved. It is the interoperability contract between humans, tools, and implementations.
+
+Protocol spec: `specs/protocol.md`.
+
+### Short Forms
+
+- Narrative Development = ND
+- Narrative Development Protocol = NDP
+- `nara` = the canonical CLI for ND/NDP workflows
+
+### Protocol Scope
+
+The NDP focuses on narrative artifacts, not code. It defines the minimum artifacts and rules a project follows so intent stays explicit and reviewable.
+
+A Narrative Development project:
+
+- MUST publish a manifest that declares intent, scope, and non-goals.
+- MUST maintain a shared vocabulary (glossary) for domain terms.
+- MUST define stories with stable identifiers, explicit inputs/outputs, constraints, and error cases.
+- SHOULD keep stories atomic and composable.
+- SHOULD record assumptions, decisions, and open questions as part of the narrative.
+- MAY generate or derive code, but code remains a provisional interpretation.
+
+The protocol is intentionally path-agnostic. Tooling (such as `nara`) may choose default locations for narrative artifacts, but the contract is the structure and meaning, not a fixed folder layout.
+
 ## The `nara` CLI
 
 `nara` is the canonical command-line interface for Narrative Development. It is the primary entry point into a Narrative Development project, designed to keep intent explicit while making AI assistance safe and useful.

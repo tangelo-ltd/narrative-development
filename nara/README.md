@@ -93,6 +93,32 @@ Narrative Development treats specifications as the source of truth and code as a
 
 See the full manifesto on GitHub: https://github.com/tangelo-ltd/narrative-development
 
+## Narrative Development Protocol (NDP)
+
+The Narrative Development Protocol (NDP) defines how narrative intent is captured, structured, and evolved so humans and tools can interoperate safely.
+
+The term "Narrative Development" was coined by Ramazan Yavuz and developed by Tangelo Bilişim Ltd.
+
+The protocol uses RFC 2119 keywords (MUST, SHOULD, MAY) to express requirements.
+
+Protocol spec: https://github.com/tangelo-ltd/narrative-development/blob/main/specs/protocol.md
+
+Short forms:
+
+- Narrative Development = ND
+- Narrative Development Protocol = NDP
+- `nara` = the canonical CLI for ND/NDP workflows
+
+Core protocol expectations:
+
+- Publish a manifest that declares intent, scope, and non-goals.
+- Maintain a shared glossary for domain terms.
+- Define stories with stable identifiers, explicit inputs/outputs, constraints, and error cases.
+- Keep stories atomic and composable when possible.
+- Treat code as a provisional interpretation of the narrative.
+
+The protocol is path-agnostic; `nara` provides defaults, but the contract is the structure and meaning of the artifacts.
+
 ## Development
 
 ```bash
