@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 
+import { readdir } from 'node:fs/promises';
+
 import { program } from 'commander';
+import { findNarrativeRoot } from './core/paths.js';
 import init from './commands/init.js';
 import adopt from './commands/adopt.js';
 import detect from './commands/detect.js';
 import configure from './commands/configure.js';
 import newStory from './commands/newStory.js';
 import status from './commands/status.js';
+import resume from './commands/resume.js';
 
 program
   .name('nara')
@@ -32,6 +36,11 @@ program
   .action(adopt);
 
 program
+  .command('resume')
+  .description('Resume the narrative session')
+  .action(resume);
+
+program
   .command('detect')
   .description('Detect installed AI CLI tools')
   .option('--force', 'Re-run detection even if already configured')
@@ -54,4 +63,18 @@ program
   .option('--verbose', 'Show full details')
   .action(status);
 
-program.parse();
+if (process.argv.length <= 2) {
+  const rootInfo = findNarrativeRoot(process.cwd());
+  if (rootInfo) {
+    await resume();
+  } else {
+    const entries = (await readdir(process.cwd())).filter(name => name !== '.git');
+    if (entries.length === 0) {
+      await init({});
+    } else {
+      await adopt({});
+    }
+  }
+} else {
+  program.parse();
+}

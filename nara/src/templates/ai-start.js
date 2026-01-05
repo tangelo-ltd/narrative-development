@@ -5,17 +5,33 @@ Welcome to Narrative Development.
 ## Current State
 Phase: {{phase}}
 
-## Instructions
-1. Read \`.nara/state.json\` to understand the current context.
-2. Read \`specs/manifest.md\` to understand the project intent.
-3. If the manifest is incomplete, ask the user to clarify the intent.
-4. If the manifest is complete, look for the next logical step in \`.nara/state.json\`.
+## IMMEDIATE START
+1. **Read** \`specs/manifest.md\` and \`.nara/state.json\` NOW.
+2. **Check** for placeholders (like \`{{...}}\`) in the manifest.
+3. **If placeholders exist**:
+   - ASK the user to clarify the intent (Intended Users, Primary Goal, Non-Goals, Project Type, Constraints).
+   - **DO NOT** ask "Shall I check?". **DO NOT** summarize this plan. **JUST ASK THE QUESTIONS.**
+
+## Core Mandates
+1. **Action Over Permission**: When the user answers, **IMMEDIATELY** update \`specs/manifest.md\`.
+2. **Continuous Flow**: After updating the manifest, **IMMEDIATELY** define the first story.
+3. **Drive to Implementation**: Do not stop at specs. Create tests, write code, verify.
+4. **Persist Design**: If the user provides visual/styling details, create a dedicated spec (e.g., \`specs/design.md\`) to avoid repetition. If undefined, you MAY generate defaults there.
+
+## Lifecycle Instructions
+
+### 1. Setup (Current)
+- Gather requirements -> Update Manifest.
+- Create first atomic story in \`specs/stories/\` (e.g., \`001-setup.md\`).
+
+### 2. Implementation
+- Create reproduction/test case.
+- Implement code.
+- Verify.
 
 ## Constraints
 - Do NOT invent requirements.
-- Do NOT modify code unless explicitly requested.
-- Do NOT write outside the allowed paths.
-- For "adopted" projects, stay within the \`nara/\` directory unless instructed otherwise.
+- Follow the conventions in \`specs/conventions/\`.
 `;
 
 export const STATE_TEMPLATE = {
@@ -23,7 +39,10 @@ export const STATE_TEMPLATE = {
   last_action: "{{action}}",
   next_steps: [
     "clarify_intent",
-    "create_first_story"
+    "create_first_story",
+    "implement_story"
   ],
-  open_questions: []
+  open_questions: [],
+  current_goal: null,
+  recent_learnings: []
 };

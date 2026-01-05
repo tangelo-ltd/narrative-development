@@ -9,6 +9,13 @@ export default [
       globals: {
         console: 'readonly',
         process: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        AbortController: 'readonly',
+        Buffer: 'readonly',
+        URL: 'readonly',
       },
     },
     rules: {

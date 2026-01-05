@@ -8,7 +8,6 @@
 import { existsSync } from 'node:fs';
 import { readFile, writeFile, readdir } from 'node:fs/promises';
 import { join, basename, dirname } from 'node:path';
-import { input } from '@inquirer/prompts';
 import { getSeedDir, canAdopt } from '../core/paths.js';
 import { copyDir, copyDirWithPolicy, ensureDir, listFiles, safeWriteFile } from '../core/fs.js';
 import { AI_START_TEMPLATE, STATE_TEMPLATE } from '../templates/ai-start.js';

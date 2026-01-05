@@ -12,6 +12,7 @@ import { input } from '@inquirer/prompts';
 import { getSeedDir, canInit } from '../core/paths.js';
 import { copyDir, ensureDir, listFiles, safeWriteFile } from '../core/fs.js';
 import { AI_START_TEMPLATE, STATE_TEMPLATE } from '../templates/ai-start.js';
+import { detectAndBootstrapAI } from '../ai/bootstrap.js';
 
 /**
  * Initialize a fresh Narrative Development repository.
@@ -112,7 +113,12 @@ export default async function init(options) {
   }
 
   console.log('\n✓ nara project initialized');
-  console.log('\nNext steps:');
-  console.log('  1. Open AI assistant and point it to AI-START.md');
-  console.log('  2. Follow the AI instructions');
+
+  const bootstrap = await detectAndBootstrapAI('Read AI-START.md and execute the "IMMEDIATE START" instructions.');
+
+  if (!bootstrap) {
+    console.log('\nNext steps:');
+    console.log('  1. Open AI assistant and point it to AI-START.md');
+    console.log('  2. Follow the AI instructions');
+  }
 }
