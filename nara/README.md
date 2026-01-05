@@ -91,7 +91,7 @@ Narrative Development treats specifications as the source of truth and code as a
 2. Review and refine specifications
 3. Generate code from clear intent
 
-See the [README.md](../README.md) in the parent directory for the full manifesto.
+See the full manifesto on GitHub: https://github.com/tangelo-ltd/narrative-development
 
 ## Development
 
